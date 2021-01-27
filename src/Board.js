@@ -82,7 +82,10 @@ class Board extends Component {
     // TODO: flip this cell 
     flipCell(y,x);
     //and the cells around it
-  
+    flipCell(y, x+1); //Right
+    flipCell(y, x-1); //Left
+    flipCell(y+1, x); //Above
+    flipCell(y-1, x); //Below
 
     //flipCell(self) and again for each of the 4 neighbors
 
