@@ -65,6 +65,7 @@ class Board extends Component {
   /** handle changing a cell: update board & determine if winner */
 
   flipCellsAround(coord) {
+    console.log(coord)
     let {ncols, nrows} = this.props;
     let board = this.state.board;
     let [y, x] = coord.split("-").map(Number);
@@ -78,13 +79,18 @@ class Board extends Component {
       }
     }
 
-    // TODO: flip this cell and the cells around it
+    // TODO: flip this cell 
+    flipCell(y,x);
+    //and the cells around it
+  
+
     //flipCell(self) and again for each of the 4 neighbors
 
     // win when every cell is turned off
     // TODO: determine is the game has been won
+    let hasWon = false;
 
-    //this.setState({board, hasWon});
+    this.setState({board: board, hasWon: hasWon});
   }
 
 
@@ -101,10 +107,17 @@ class Board extends Component {
     for(let y = 0; y < this.props.nrows; y++){
       let row = [];
       for(let x=0; x < this.props.ncols; x++){
-        row.push(<Cell isLit={this.state.board[y][x]} />)
+        let coord = `${y}-${x}`;
+        //Creating a key that is the y/x coordinate of each box
+        // as a string so that we can make use of it in flipCell(y, x).
+        row.push(<Cell key={coord} isLit={this.state.board[y][x]} 
+        flipCellsAroundMe={() => this.flipCellsAround(coord)}/>)
         //building off the logic from createBoard, we're using the T/F value 
-        // and current y/x coordinates to create an array of Cells with that info.
+        // from the corresponding y/x coordinates in the board array we created earlier
+        // to create a Cell component with that 'isLit' value.
         // The table will be rendered as the tblBoard variable in tbody.
+        //Passing in flipCellsAround from the parent to the newly created child Cell
+        // Using the () => this way does create a new function each time instead of .bind()
       }
       tblBoard.push(<tr>{row}</tr>)
     }
