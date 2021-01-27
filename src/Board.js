@@ -97,8 +97,24 @@ class Board extends Component {
     // TODO
 
     // make table board
+    let tblBoard = [];
+    for(let y = 0; y < this.props.nrows; y++){
+      let row = [];
+      for(let x=0; x < this.props.ncols; x++){
+        row.push(<Cell isLit={this.state.board[y][x]} />)
+        //building off the logic from createBoard, we're using the T/F value 
+        // and current y/x coordinates to create an array of Cells with that info.
+        // The table will be rendered as the tblBoard variable in tbody.
+      }
+      tblBoard.push(<tr>{row}</tr>)
+    }
+
     return (
-      <h1>BOARD</h1>
+      <table className="Board">
+        <tbody>
+          {tblBoard}
+        </tbody>
+      </table>
     )
 
     // TODO
