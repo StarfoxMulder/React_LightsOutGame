@@ -87,11 +87,12 @@ class Board extends Component {
     flipCell(y+1, x); //Above
     flipCell(y-1, x); //Below
 
-    //flipCell(self) and again for each of the 4 neighbors
-
     // win when every cell is turned off
     // TODO: determine is the game has been won
-    let hasWon = false;
+    let hasWon = board.every(row => row.every(cell => !cell));
+    //each time flipCellsAround is called we check to see if the player won
+    // passing in .every(row) and then checking to see if .every(cell) 
+    // has an isLit value of false.  All false values is the win condition.
 
     this.setState({board: board, hasWon: hasWon});
   }
@@ -102,8 +103,9 @@ class Board extends Component {
   render() {
 
     // if the game is won, just show a winning msg & render nothing else
-
-    // TODO
+    if(this.state.hasWon) {
+      return (<h1>YOU WON!!!!!</h1>)
+    }
 
     // make table board
     let tblBoard = [];
@@ -113,8 +115,13 @@ class Board extends Component {
         let coord = `${y}-${x}`;
         //Creating a key that is the y/x coordinate of each box
         // as a string so that we can make use of it in flipCell(y, x).
-        row.push(<Cell key={coord} isLit={this.state.board[y][x]} 
-        flipCellsAroundMe={() => this.flipCellsAround(coord)}/>)
+        row.push(
+          <Cell 
+            key={coord} 
+            isLit={this.state.board[y][x]} 
+            flipCellsAroundMe={() => this.flipCellsAround(coord)}
+          />
+        )
         //building off the logic from createBoard, we're using the T/F value 
         // from the corresponding y/x coordinates in the board array we created earlier
         // to create a Cell component with that 'isLit' value.
@@ -122,7 +129,7 @@ class Board extends Component {
         //Passing in flipCellsAround from the parent to the newly created child Cell
         // Using the () => this way does create a new function each time instead of .bind()
       }
-      tblBoard.push(<tr>{row}</tr>)
+      tblBoard.push(<tr key={y}>{row}</tr>)
     }
 
     return (
